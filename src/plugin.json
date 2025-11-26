@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Events Topology",
+  "name": "Events Topology Panel",
   "id": "worteks-eventstopology-panel",
   "info": {
     "keywords": ["panel"],
@@ -14,7 +14,10 @@
       "large": "img/logo.svg"
     },
     "links": [],
-    "screenshots": [],
+    "screenshots": [{
+      "name": "Example view",
+      "path": "img/screenshot.png"
+    }],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },

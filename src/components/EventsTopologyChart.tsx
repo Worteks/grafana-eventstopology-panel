@@ -47,6 +47,17 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
 
   return (
     <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+      {graduations.map((time, index) => {
+        const x = getTimePosition(time);
+        return (
+          <g key={`graduation-${index}`}>
+            <line x1={x} y1="0" x2={x} y2={height} stroke={graduation_color}></line>
+            <text x={x + 5} y={height - 2} fill="rgb(204, 204, 220)" fontSize="smaller">
+              {new Date(time).toLocaleTimeString()}
+            </text>
+          </g>
+        );
+      })}
       {lines.map((line, line_idx) => {
         y += line_height + margin;
         return line.map((event, event_idx) => {
@@ -65,17 +76,6 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
             />
           );
         });
-      })}
-      {graduations.map((time, index) => {
-        const x = getTimePosition(time);
-        return (
-          <g key={`graduation-${index}`}>
-            <line x1={x} y1="0" x2={x} y2={height} stroke={graduation_color}></line>
-            <text x={x + 5} y={height - 2} fill="rgb(204, 204, 220)" fontSize="smaller">
-              {new Date(time).toLocaleTimeString()}
-            </text>
-          </g>
-        );
       })}
     </svg>
   );

@@ -184,7 +184,6 @@ const getStyles = () => ({
   `,
   headers: css`
     display: grid;
-    // grid-template-columns: repeat(4, auto);
     gap: 0 20px;
     flex-grow: 0;
     flex-shrink: 0;

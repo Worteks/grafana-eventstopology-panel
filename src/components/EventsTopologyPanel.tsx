@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { css } from '@emotion/css';
 import { DataFrame, PanelProps } from '@grafana/data';
 import { useStyles2 } from '@grafana/ui';
@@ -33,15 +33,16 @@ export const EventsTopologyPanel: React.FC<Props> = (props) => {
 
   const [graph_width, setGraphWidth] = useState(0);
   const [graph_height, setGraphHeight] = useState(0);
-  const margin = graph_height * margin_between_lines_ratio;
-  useEffect(() => {
+  const [margin, setMargin] = useState(0);
+  useLayoutEffect(() => {
     setGraphWidth(
       width -
         (topologyPathsRef?.current?.getBoundingClientRect()?.width ?? 0) -
         (legendRef?.current?.getBoundingClientRect()?.width ?? 0)
     );
-    setGraphHeight(height);
-  }, [show_legend, width, height]);
+    setGraphHeight(height - (headers ? header_line_height : 0));
+    setMargin(height * margin_between_lines_ratio);
+  }, [show_legend, headers, width, height]);
 
   /**
    * Remove redundancy from two topology paths
@@ -140,11 +141,11 @@ export const EventsTopologyPanel: React.FC<Props> = (props) => {
           })}
       </div>
 
-      <div style={{ paddingTop: headers ? header_line_height : 0 }}>
+      <div className={styles.chart} style={{ paddingTop: headers ? header_line_height : 0 }}>
         {/* Render events */}
         <EventsTopologyChart
           width={graph_width}
-          height={graph_height - (headers ? header_line_height : 0)}
+          height={graph_height}
           lines={topology.map((l) => l.events)}
           margin={margin}
           from={from}
@@ -193,6 +194,9 @@ const getStyles = () => ({
   header_element: css`
     display: inline-flex;
     align-items: center;
+  `,
+  chart: css`
+    flex-grow: 1;
   `,
   legend: css`
     flex-grow: 0;

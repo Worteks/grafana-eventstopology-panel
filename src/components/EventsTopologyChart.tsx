@@ -9,7 +9,7 @@ interface Props {
   from: number;
   to: number;
   lines: Event[][];
-  margin: number; // The horizontal margin between events
+  margin: number; // The margin between lines
   debug?: boolean;
 }
 

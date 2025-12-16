@@ -1,5 +1,6 @@
 import React from 'react';
 import { Event } from 'types';
+import { EventComponent } from './EventComponent';
 
 interface Props {
   width: number;
@@ -64,16 +65,15 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
           const x = getTimePosition(event.time);
           const width = getTimePosition(event.time_end) - x;
           return (
-            <rect
+            <EventComponent
               key={`line-${line_idx}-event-${event_idx}`}
-              stroke={event.color}
-              fill={event.color}
-              fillOpacity="0.4"
               x={x}
               y={y}
               width={width}
               height={line_height}
-            />
+              color={event.color}
+              event={event}
+            ></EventComponent>
           );
         });
       })}

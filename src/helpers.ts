@@ -56,3 +56,25 @@ export function generateColor(field: Field, value: string | number, debug: boole
 
   return color;
 }
+
+export function calculateDuration(start: Date, end: Date): string {
+  let hour = 0;
+  let min = 0;
+  let sec = 0;
+
+  let remaining = end.getTime() - start.getTime();
+
+  if (remaining >= 3600 * 1000) {
+    hour = Math.floor(remaining / (3600 * 1000));
+    remaining = remaining - hour * 3600 * 1000;
+  }
+
+  if (remaining >= 60 * 1000) {
+    min = Math.floor(remaining / (60 * 1000));
+    remaining = remaining - min * 60 * 1000;
+  }
+
+  sec = Math.floor(remaining / 1000);
+
+  return (hour > 0 ? `${hour}h ` : '') + `${min}m ${sec}s`;
+}

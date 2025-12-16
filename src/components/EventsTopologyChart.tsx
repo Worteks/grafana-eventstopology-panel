@@ -1,6 +1,7 @@
 import React from 'react';
 import { Event } from 'types';
 import { EventComponent } from './EventComponent';
+import { useTheme2 } from '@grafana/ui';
 
 interface Props {
   width: number;
@@ -13,12 +14,14 @@ interface Props {
 }
 
 const min_graduation_width = 175;
-const graduation_color = '#555555';
 
 export const EventsTopologyChart = ({ width, height, from, to, lines, margin, debug }: Props) => {
   if (debug) {
     console.log('Chart component props: ', { width, height, from, to, margin });
   }
+
+  const theme = useTheme2();
+  const graduation_color = theme.colors.border.medium;
 
   const time_range = to - from;
 

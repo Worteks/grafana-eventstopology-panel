@@ -26,7 +26,6 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
   const svgRef = useRef<SVGSVGElement>(null);
 
   const theme = useTheme2();
-  const graduation_color = theme.colors.border.medium;
 
   const time_range = to - from;
 
@@ -85,8 +84,8 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
         const x = getTimePosition(time);
         return (
           <g key={`graduation-${index}`}>
-            <line x1={x} y1="0" x2={x} y2={height} stroke={graduation_color}></line>
-            <text x={x + 5} y={height - 2} fill="rgb(204, 204, 220)" fontSize="smaller">
+            <line x1={x} y1="0" x2={x} y2={height} stroke={theme.colors.border.medium}></line>
+            <text x={x + 5} y={height - 2} fill={theme.colors.text.primary} fontSize="smaller">
               {new Date(time).toLocaleTimeString()}
             </text>
           </g>

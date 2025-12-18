@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
+
 import { Event } from 'types';
 import { EventComponent } from './EventComponent';
 import { useTheme2 } from '@grafana/ui';
+import { locationService } from '@grafana/runtime';
+import { MouseDragComponent } from './MouseDragComponent';
 
 interface Props {
   width: number;
@@ -19,6 +22,8 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
   if (debug) {
     console.log('Chart component props: ', { width, height, from, to, margin });
   }
+
+  const svgRef = useRef<SVGSVGElement>(null);
 
   const theme = useTheme2();
   const graduation_color = theme.colors.border.medium;
@@ -49,8 +54,33 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
     return ((time - from) / time_range) * width;
   }
 
+  /**
+   * Get time for a given position on chart
+   */
+  function getPositonTime(position: number): number {
+    return from + Math.floor((position / width) * time_range);
+  }
+
+  function setTimeRange(start: number, end: number) {
+    if (debug) {
+      console.log(
+        `Selected time range: ${new Date(getPositonTime(start)).toLocaleString()} => ${new Date(
+          getPositonTime(end)
+        ).toLocaleString()}`
+      );
+    }
+    // Set new time range
+    locationService.partial({ from: getPositonTime(start), to: getPositonTime(end) }, true);
+  }
+
   return (
-    <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+    <svg
+      ref={svgRef}
+      width={width}
+      height={height}
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+    >
       {graduations.map((time, index) => {
         const x = getTimePosition(time);
         return (
@@ -80,6 +110,7 @@ export const EventsTopologyChart = ({ width, height, from, to, lines, margin, de
           );
         });
       })}
+      <MouseDragComponent setTimeRange={setTimeRange} targetElement={svgRef.current} />
     </svg>
   );
 };

@@ -191,6 +191,7 @@ const getStyles = () => ({
     flex-shrink: 0;
     overflow: hidden;
     white-space: nowrap;
+    padding-right: 25px;
   `,
   header_element: css`
     display: inline-flex;
